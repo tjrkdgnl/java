@@ -1,0 +1,297 @@
+*7단원 (상속)
+
+1.modifier 
+- private : 오로지 본인의class에서만 접근가능 || 상속 받은 자식 클래스에서도 부모의 private method, 변수 모두 사용 불가능, 객체화를 해도 사용 불가능
+  -> private으로 설정된 method는 상속이 되지않는다.
+- public : 자신이외에 누구든 접근가능 
+- protected : 자신을 포함한 상속을 받은 자식들까지는 접근 가능. 그외 접근 불가능. 
+  	    1) 자신의 class에서 사용가능
+  	    2) 상속을 받은 자식 class에서 사용가능
+  	    3) 같은 패키지 안에 있는 class에서 사용가능
+
+-package private : 일반적으론 modifier가 붙어있지않은 형태이며, 같은 package내에 존재하면 접근과 사용이 가능하지만 다른 package에서는 접근 불가능
+  
+2. overriding vs overloading
+- overriding: 헤더 부분이 완전히 같아야한다.( 즉 return type, parameter값 모두 같아야한다. 즉 재정의라 할 수 있다.)
+- overloading: 헤더부분에서 return type, return type에 맞는 파라미터 자료형 각각 갖을 수 있다. (여러 리턴 자료형으로 method를 이용하는데 유용하다.) -> 한가지 기능으로 여러 type의 data를 쓰기위해서.
+-cf) 단 final modifier가 붙어있는 method는 다른 derived class에서 overriding이 불가능하다. 뿐만아니라 class의 정의에 붙어있다면 다른 클래스에게 파생조차 할 수 없다. 
+
+3. super constructor
+- derived class에서 basic class의 생성자의 역할을 한다.
+- 만약 선언 되어져있지않으면 default 값으로 설정이 된다. 단 basic class에 parameter가 없는 생성자가 존재하는 경우에서만이다.
+- 항상 맨 위에 선언이 되어져 있어야한다. 
+
+4. this constructor
+- 같은 class 내에있는 여러 생성자들이 존재할 때, constructor들 끼리 호출하는데 사용되어지는게 this() 이다. 즉 여러개의 constructor가 정의 되어져 있을 때,   다른 constructor에서 다른 constructor를 불러온다. 단! 불러오는 constructor는 반드시 정의가 되어져 있어야 this()를 사용할 수 있다.
+- 현재 class를 지칭하고, 현재 클래스에 있는 변수들에 값을 지정하고 또 다른 클래스에서 오는 값과 현재 변수를 구분 짓을 수도있다.
+- 맨 위에 선언을 해야한다.
+tip) 한 constructor에는 super와 this constructor가 동시에 올 수 없다.
+
+5.Object class
+- 자바에 있는 모든 class는 Object class의 자식 class이다.
+- 모든 class의 type에는 원래 type이기도하며, Object type이기도 하다.
+- java.lang package에 속해 있는 class이기 때문에 import가 필요없다. 
+- type이 Object인 parameter에 argument로 어떤 class가 와도 무방하다.(argument에 오는 것이 class type이기 때문에 Object type이기도 함.)
+- Object class는 몇가지 method를 갖는다. -> 모든 class들이 이런 method들을 상속을 받고 자신의 class에서 적절히 overriding 되어서 쓰임
+  EX) equals,toString method 등등
+
+tip) argument에 basic class를 받아야하지만 derived class가 왔을 때, derived class는 basic class로 상속을 받고 있기 때문에 인자값으로 형변환하여 사용 될 수 있다.
+
+1)getclass() method
+- Object에서 상속 받을 수 있는 method이고 modifier가 final이기 때문에 overriding이 불가능하다.
+- 상속을 받은 어떤 class가 존재하면 getclass() method는 오직 현재의 class type만 취급하고 상속받은 class type은 갖지 않는다.
+- return type은 현재의 class type이다. (boolean 값이 아니지만, ==, != 연산을 수행 할 수 있다.)
+
+6. instanceof operator
+: 해당하는 class가 다른 class로 형변환이 가능한지에 대한 여부를확인하는 것.
+- method가 아닌 == ,!= 과 같은 operator이다
+- [object] instanceof [className] 의 형식을 취하고 이때 object가 className의 type이 될수 있는지의 여부를 boolean 값으로 return한다.
+- instanceof는 derived class의 type으로 변할 수 있는지를 본다. 따라서 여러 class로부터 상속을받은 derived class의 name이오면 부모 class 중
+어떤 하나의 class type으로 type casting이 될 수 있다.
+
+tip)
+-기본적인 경우:  [derived class] instanceof [derived class가 상속받은 class]
+-downcasting : [basic class] instanceof [down할 class]
+-안되는 경우 : [basic class] instanceof [아무관련 없는 class]
+
+Q1. super constructor가 항상 맨 위에 선언되어야하는 이유는?
+
+
+*8단원
+cf)자바에서 가장 중요한 3가지는 캡슐화, 상속, 다형성이다.
+
+1.다형성(polymorphism) 
+: 같은 기능일지라도 내용에 따라 다양하고 효율적으로 사용이 가능하게 만드는 기술
+
+2. binding 
+: 이름과 내용을 연결시켜주는 기능
+- early binding(static binding) : compile time에 내용과 이름이 연결되어지는 것을 의미한다.
+- late binding(dynamic binding) : compile 이후 run time에서 내용과 이름이 연결되어지는 것을 의미한다.
+{
+1)자바는 late binding을 지원한다. 따라서 c와 다르게 선언되어져 있지 않은 함수에 대해 쓴다하더라도 컴파일이 가능하고 컴파일 이후에
+  내용이 연결되어지기 때문에 c처럼 함수 헤더를 미리 선언하지 않아도 된다.
+2)모든 method에 대한 late binding은 private, final, static method 이 아닐때 적용된다.
+3)toString은 late binding에 속한다. -> 모든 class는 Object class를 상속하기 때문에 toString 함수를 모든 class가 상속을 받는다. 하지만 toString에 대해서 class들이 정의를 해 놓았다면 late binding이기 때문에 각 class에서 overriding 된 toString을 불러오는 것이다.
+}
+
+3. upcasting
+:  derived class가 상속받은 basic class type으로 할당이 되어 질 때
+ex) [basic class] vari1 = (basic class)[derived class] vari2  -> var1이 기능을 축소시켜 사용됨을 의미한다. 
+-이때 [derived class]에 쓰이는 자원값들을 vari1에서 호출하거나 사용되어 질 수 없다. - > derived class로 정의된 값을 받았지만 upcasting은 derived class가 상속받는 basic class type을 리턴하는 것이기 때문에 중간다리 역할만 할 뿐이다. 결국 basic class에서 정의된 값만 사용되어 질 수 있다. basic = derived class ---> basic class
+
+4. downcasting
+: basic class가 derived class에 할당 될 때
+ex)[derived class] var1 =(derived class)[basic class] var2 -> compile time에는 에러 밑줄이 뜨질 않지만 run time 때에는 casting이 두번 일어나기 때문에 에러가 발생한다.
+해결법: A instanceof B 를 사용한다. 이때 A가 B type과 같거나 or B가 A를 상속하는 관계라면 true이다.
+ex)
+Cat c = new Cat();
+Animal a = c
+
+Cat c2 = (Cat)a  => downcasting가능. -> cat class에 있는 field, method 모두 사용 가능.    
+
+5. abstract class 
+: 포함관계에 있어 가장 넓은 범위를 갖는 것, 공통으로 쓰일 수 있는 특징이 이것으로도 쓰일 수 있고 저것으로도 쓰일 수 있을 때, 이 집합을 
+ 각자의 class가 상속받아서 특징에 맞게 abstract method들을 재정의하여 사용하는데 쓰인다. 
+->그렇기에 이 집합으로 만들어지는 객체는 구체화 될 수 없으니 객체화가 불가능하고 상속만으로 재정의되는데 쓰인다.
+- constructor는 가질 수 있다. -> 따라서 derived class의 constructor에서 super로 추상클래스의 변수값들을 초기화 시킬 수 있다.
+- variable도 가질 수 있다.
+- modifier는 반드시 public 이어야 한다. -> private 안됨.
+- 다른 class에서 객체로 생성될 수 없다.
+- abstract method가 class 내에 하나라도 존재한다면, class 헤더에 abstract 추가
+- abstract method가 다른 derived class에서 정의가 되어질거라면 abstact만 빼고 동일한 헤더로 재정의한다.
+- abstract method는 parameter값을 가질 수 있다.
+- 추상클래스를 상속받는 concrete class에서는 반드시 추상클래스 내부에 있는 추상 method들을 overriding 해야한다.
+
+6. clone method 
+: Object의 method임으로 모든 클래스는 상속을 받음.
+- parameter가 존재하지 않는다. 
+- 추상 method이다
+- deep copy는 한가지 type에 대해서만 copy를 할 수 있는 반면에, clone은 Object 배열이 존재할 때 다양한 class type이 존재해도 
+  각 class에 맞는 type을 copy 할 수 있다.
+
+Q1. 추상클래스가 다른 method의 인자값으로 어쩔 때 오나?
+
+*9강
+try block ,catch block , throw operation
+
+1. try block 
+: 오류가 날 가능성이 있는 코드를 담는 block
+- code 실행 도중 에러가 발생하면 나머지 코드는 실행하지 않고 try block은 종료된다.
+
+2. catch block 
+: try에서 실행되는 코드에서 에러가 나게되면 처리하는 exception handler
+- 최대 하나의 argument를 갖는다.
+- 다중 catch일 때는 먼저 type이 맞는지 확인하고 일치하는 catch문을 실행한다. 나머지 실행 x
+- try에서 throw된 객체와 파라미터가 plugged in 된다.
+- method처럼 쓰이지만 method가 아닌 try의 예외처리를 해주는 code block이다.
+- throw operation일때 현재 있는 위치에서 예외처리하기 때문에 catch로 예외값을 처리하고 throws operation은 호출한 곳에서
+  try/catch문을 통해 예외처리를 한다.
+
+3. throw operation
+: throw operation은 프로그래머 판단에 따른 예외처리 방식이다. -> throw new [ClassName] 으로 내가 만든 class로 예외처리 가능
+- 내가 만든 class는 반드시 RuntimeException(runtime check)이나 Exception(compile time check) 둘중 하나를 상속받아야한다.
+- 사용자가 method에 어떤 조건일 때 자신이 만든 예외처리 class를 강제로 불러 method 내에서 해결을 할 수 있다.
+- 사용되어지는 곳(method내)에서 예외처리를 한다.
+- throw하는 어나니머스 객체를 생성하여 한번 불러온다. ex) throw new [className]();
+-> 자신이 예외가 처리되는 조건을 결정하기 때문에 다른 예외처리는 실행되어 지지 않는다. 따라서 throws를 써서 부가적으로 발생하는 예외처리를 할 수 있다.
+
+4.throws operation
+: throws operation가 만약 특정 method 헤더에 선언되어져있다고 가정할 때, 예외 처리 방식은 이 method를 호출한 class에서 처리가 되게 해야한다. 따라서 method 내에서는 헤더에 throws [className]을 추가로 선언만 하고 이 함수를 호출 하는 곳에서 try/catch를 하여 오류를 처리한다.  
+- 호출된 곳으로 예외를 알리기 위해  throw new [예외class] 로 알려야한다.
+- 예외가 있을 수 있는 method의 헤더 부분에 throws [className]을 붙인다.
+
+
+5.finally block 
+- try에서 예외가 발생하든 안하든 무조건 실행
+-예외가 발생하여 catch block이 실행되고 무조건 실행
+- return 값이 와도 무조건적으로 실행한다.
+
+
+**만약 예외처리가 발생한다면 그 이후의 연산은 실행하지 않기때문에 어디서 예외처리가 되는지는 매우 중요하다.
+tip)자바 라이브러리에 이미 선언된 예외처리 class가 존재하는데 모든 Exception class들은 하나의 String type을 인자로 갖는 constructor가 존재한다.
+tip)multi try는 있을 수 없지만 multi catch는 존재 할 수 있다.
+
+
+*10강
+
+1. 파일 입출력에 있어서 try/catch 문은 필수이다.
+
+2. close() method는 stream버퍼에 쓰인 값들을 text file로 보내는 역할 뿐만아니라 연결을 해제해 메모리 해제 기능까지한다.
+-> read는 별도의 String class에 할당하기때문에 close()가 반드시 필요하진 않지만 write를 할때는 바로 text file에 쓰는 것이아닌 stream 버퍼에 쓰이기때문에 close()가 선행되어야 한다.
+ex) PrintWriter writer = new PrintWriter(new FileOutputStream(파일명));
+  writer.close();
+
+3. checked exception : try / catch 문을 통해 걸러지는 예외처리들
+
+4. unchecked exception : try / catch에서 다뤄지지 않는 예외들
+-NosuchElementException
+-InputMismatchException
+-IllealStateException
+
+5. Scanner
+- Scanner scan = new Scanner(new FileInputStream(FileName, File object)) -> scan에 text에 있는 모든 값을 저장함
+- hasnext() vs hasnextLine()  = hasnext()는 필요한 string값만 있다면 true를 return 해준다. 이때 인덱스는 \n전이거나 공백값 전 
+			= hasnextLine()은 string값이 존재한다면 true를 return 해준다.  \n도 하나의 문자열로 취급하기때문에 잘 판단
+			= 두 method에 궁극적인 목적은 file의 끝에 도달했을때 그 이상의 범위에서 값을 불러오지 않게 미연에 방지하는 			   			   	   역할이다.
+
+6. PrintWriter printer = new PrintWriter(new FileOutputStream(FileName,File object)) -> 버퍼에 쓰고자 하는 값을 println, print, printf등의 
+method를 통해서 쓴다. 이후 close()나 flush() method를 만나면 text file에 쓴다.
+
+tip)만약 close()를 안써도 자바가 자동적으로 close 처리를 해주기 때문에 문제가 생기지는 않는다. 단 write를 할때에는 버퍼에만 값을 쓰기때문에 text file에는 쓰이질 않는다.
+
+7. BufferedReader class
+: text file을 읽어드리는데 사용되는 class
+- file이름을 인자로 취하는 constructor가 존재하지 않음. -> FileInputStream이나 FileOutputStream처럼 filename을 해당 class의 constructor에 인자로 쓸수있게 바꿔주는 class가 BufferedReader에도 필요하다. 그 class는 FileReader(filename)
+-숫자를 읽어드리는 method가 없기때문에 wapper class를 통해 변환시켜줘야한다.
+- read , readLine methods를 가지고있음
+{
+ 1) read는 단일 문자를 읽어드리고 return은 int type으로 반환한다 이때 int 값은 아스키문자를 정수로 변형했을때의 값이다. 따라서 숫자로 된 문자값을 그대로 읽고싶다면 wapper class를 통해 받으면 된다. || 만약 없는 값을 읽어드리려고하면 -1을 return한다.
+ 2) readLine은 scanner함수처럼 사용자의 입력을 받는 stream을 읽어드리거나, text file의 한 line을 읽어드린다.
+}
+- PrintWriter처럼 import java.io.*이 필요함
+- catch(IOException e)를 추가하여 예외처리를 잡아줘야한다.
+
+tip) FileNotFoundException 예외처리는 IOException class의 subclass이기 때문에 IOException보다 FileNotFoundException이 선행되어야 한다.
+
+tip) window에서는 \이 하나의 역슬레쉬로 의미가 되어지고, \은 escape character의 시작으로 쓰인다.따라서 directory의 주소를 나타낼때는 역슬레쉬로 구분짓어 나타내어야하니까 \\로 써서 구분 짓도록해야한다.
+
+*13강
+
+1. interface 
+:인터페이스는 추상클래스의 극단적인 경우이지만 class는 아니다. 
+- 헤더부분 선언은 class대신에 interface로 대체하면 된다.
+- 다중상속을 지원하지않는 자바에서 어느정도의 다중상속과 같은 기능을 제공하는것이 interface이다.
+- 무조건 public으로 설정되어야한다(interface 선언부분도, method도). -private, protected, package access 사용 불가.
+- class처럼 basic interface가 있고 이를 상속받는 derived interface가 있다. interface도 상속받을 땐 extends를 이용한다.
+- 만약 concrete class에서 interface를 사용하면 interface에 나열되어져있는 method들을 반드시 overriding 하여 재정의 해야한다.
+- class처럼 .java 와 .class 를 쓴다.
+- 변수는 static이나 ,final로 밖에 가질 수 없다. 선언을 안해도 자바가 자동으로 바꿔준다.
+- constructor를 갖지않는다.
+- 객체화 할 수 없다. -> 단 new operation을 통해 어나니머스 class를 만들면 객체화가 가능하다.
+- comma로 여러개를 계속 확장할 수 있다. 
+- 추상 클래스에서 implements된다면, 추상 클래스에서 정의하는 것이 아닌, 추상클래스를 상속하는 다른 concrete class에서 모두 overrriding해야한다.
+ex)
+public interface Ordered
+{
+  public boolean precedes(Object obj);
+
+  public boolean follows(Object obj);
+} - interface는 class는 아니지만 method를 가질 수있다.  이때의 method는 추상적으로 헤더만 표현하고 인자를 모든 값을 받을 수 있는 Object type으로 받고   
+    어떤 class에서 어떤 값으로든지 overriding이 되게 할 수 있다.
+  - 또한 추상클래스의 극단적인 표현이지만 abstract을 modifier 다음에 선언하지 않는다.
+
+tip) abstract class에서 interface를 사용하기도 한다. 이때 interface에 있는 method를 abstract class로 가져올때는 반드시 abstract을 붙여야한다.
+
+2. comparable interface
+-어떤 type이 오든지간에 정렬을 일반화시켜 적용할 수 있게 함.
+- java.lang에 속함
+- overriding해야 할 method는 compareTo밖에 없음.
+- 인자로오는 값이 비교 type과 일치하지않는다면 ClassCastException 예외처리가 발생한다.
+-Arrays.sort(Object o)명령어는 인자값으로 오는 type class에 정의된 compareTo를 참조하여 정렬을 진행한다. 
+
+3. inner class
+: 어떤 class 내부에서 정의되어지는 class
+- private이면 선언된 outer class에서만 사용 그외의 외부 class에서는 접근할 수 없다. -> 내부의 modifier는 public , private 똑같이 작동한다.(자체class에서)
+- inner class에 file은 outerclass$innerclass.class로 생성이 된다.
+- inner class가 자체적으로 static이 되어야 할 경우는 outer class에 static method에서 inner class 객체를 생성할 때이다. || 반대로 outer class에서 static이 아닌 method에서 static인 inner class에 객체를 생성할 수 있다.
+- derived class가 inner class가 있는 outer class를 상속받으면 자동적으로 inner class 또한 상속이 된다. 단 이때 derived class에서 inner class를 override할 수 없다.
+ex)inner class가 public일때 외부의 class에서의 접근
+
+Cat cat = new Cat();
+Cat.Inner in = cat.new Inner();
+=>먼저 Outer class를 먼저 객체화 한 뒤, 그 객체화 된 것으로 Outer class에 inner class 객체화 할 수 있음.
+
+ex)inner class가 public이지만 static 선언이 되어져 있을 때
+
+Cat.Inner in = new Cat.Inner();
+=> 이렇게 outer class를 객체화 후에 접근하는것이 아닌 direct로 접근이 가능
+
+
+*14강
+
+1. generic : class를 짤 때, 미리 type을 정해놓지않은 상태에서 코드를 만들어놓고, 객체화 할때 원하는 type으로 할당하여 다양한 type들에 대해 같은 기능을 쓸 수 있게 해주는 기능이다.
+- <type> : type에는 primitive type이 올 수 없다. 단 primitive type으로 만들어진 array는 class로 속하기 때문에 가능하다(ex int[], double[] etc...)
+- <T1,T2> : 멀티이상의 타입을 한번에 받을 수도 있다.
+- generic class : 헤더에 반드시 <type>이 있어야한다. 하지만 constructor를 작성할 땐 일반 class처럼 작성해야한다. 이때 <type>명시는 하지않는다.
+	         단 객체화 하는 new 연산자에서는 <>표시로 type을 잡아줘야한다.
+	       : generic class도 extends할 수있다. 하지만 같은 class를 extends하는 클래스만이 올 수있다. <T extends className>
+- generic method: 다양한 type에 대해서 같은 기능을 보이고 싶을때 사용한다. public T  methodName() {};이라 선언하고 사용할때는
+  obj.<type>methodName();
+-extends만 하거나, implements만 하거나 둘중 하나만 한다. 
+-<T1 , T2> 형태의 generic: constructor에 인자값으로 분리해 따로따로 받으면 안됨. 다른 변수나 method들은 각자의 제네릭에 대한 값을 쓸 수 있음.
+
+ex) public class genericClass<T1,T2> {
+     
+     public T1 T1_value;
+     public T2 T2_value;
+
+     public genericClass(T1 num1, T2 num2)
+     {
+	this.T1_value = num1;
+	this.T2-value = num2;
+     }
+}
+
+2.ArrayList : array와는 달리, 동적으로 값을 할당받아 크기가 가변적으로 변하는 class
+-java.util package에 속한다.
+-[]을 쓰지 않고 ()을 쓴다.
+-generic을 반드시 써야한다. -> generic에는 class type만 올 수 있기때문에 primitive type이 올 수 없다.
+-처음 객체화 할 때 사이즈를 정해도 되고 안정해도 된다. 만약 사이즈를 정했다하더라고 그것은 가변적인 크기이기 때문에 정해놓은 사이즈를 넘어가면
+ 사이즈는 늘어난다.
+- booelan add(Object obj) or void add(int idx, Object obj) 두가지 방식으로 값을 추가할 수있다. 두번째 방식에서 idx에 값이 있다면 새로운값을 그 idx에 추가하고 기존에 있던 값은 하나씩 밀리게 된다.
+- base_type get(int idx): 인덱스에 있는 element 값 반환
+- base_type set(int idx,Object obj): 기존에 idx에 값이 있다면 새로운 값으로 대체, 기존에 값이 있을 때만 적용이 가능하다. set으로 초기화는 불가능
+- base_type remove(int idx) or boolean remove(Object obj): 해당하는 위치 or 객체가 있으면 삭제.
+- boolean contain(Object obj): 배열에 해당 obj가 있는지 확인하고 있으면 true 없으면 false
+- int  indexOf(Object obj): 해당하는 여러 obj에 대해 첫번째 요소값의 idx를 return 
+- int lastIndexOf(Object obj): 해당하는 여러 obj에 대해 마지막 요소값의 idx를 return
+- boolean isEmpty() : arrayList가 비었는지 확인
+- Object clone(): 배열에 있는 요소값을 복사. 하지만 shallow copy이므로 할당 받은 값이 만약 값을 바꾸면 원본도 바뀜에 유의.
+- int size() : ArrayList안에 있는 값들의 개수. 초기 크기 설정값과는 상관없이 값이 몇개인지만 count
+
+3.for-each
+- for문보다 좀 더 간편한 형태
+- size값을 알고있어야 사용이 가능
+
+Q1. array class에서 compareTo를 통해 sort하는 과정이 어떻게 되는건지?
+Q3. generic method return type을 어떻게 써야하는지?
